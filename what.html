@@ -140,7 +140,7 @@
             </div>
             <div class="slide">
                 <div class="slide-container">
-                    <img src="SHIVAM10.jpg" alt="Image 4">
+                    <img src="img/SHIVAM10.jpg" alt="Image 4">
                     <div class="slide-caption">
                         <h3>"My Happiness Begins and Ends with You" 💖✨</h3>
                         <p>I’ve realized that no matter what happens, I won’t ever be truly happy without you in my life.</p>
@@ -245,43 +245,60 @@
     </div>
 
     <script>
-        let slideIndex = 0;
-        const slides = document.querySelector('.slides');
-        const slideElements = document.querySelectorAll('.slide');
-        let autoSlideInterval;
+        document.addEventListener('DOMContentLoaded', () => {
+            let slideIndex = 0;
+            const slides = document.querySelector('.slides');
+            const slideElements = document.querySelectorAll('.slide');
+            const slider = document.querySelector('.slider');
+            let autoSlideInterval;
         
-        function currentSlide(n) {
-            slideIndex = n;
-            updateSlider();
-        }
-
-        function updateSlider() {
-            slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-        }
-
-        // Optional: Auto sliding
-        function autoSlide() {
-            slideIndex = (slideIndex + 1) % slideElements.length;
-            updateSlider();
-        }
-
-        // Start auto slide 
-      function startAutoSlide() {
-            autoSlideInterval = setInterval(autoSlide, 10000);
-        }
-
-    // Stop auto-slide
-    function stopAutoSlide() {
-            clearInterval(autoSlideInterval);
-        }
-
-        // Event listeners for hover
-        const slider = document.getElementById('slider');
-        slider.addEventListener('mouseenter', stopAutoSlide);
-        slider.addEventListener('mouseleave', startAutoSlide);
-
-        // Start auto slide on page load
-        startAutoSlide();
-    </script>
+            if (!slides || slideElements.length === 0 || !slider) {
+                console.error('Slider elements not found. Ensure the HTML structure is correct.');
+                return;
+            }
+        
+            function updateSlider() {
+                slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+            }
+        
+            function autoSlide() {
+                slideIndex = (slideIndex + 1) % slideElements.length;
+                updateSlider();
+            }
+        
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(autoSlide, 5000); // 5-second interval
+            }
+        
+            function stopAutoSlide() {
+                clearInterval(autoSlideInterval);
+            }
+        
+            function manualSlide(n) {
+                slideIndex = n;
+                updateSlider();
+                stopAutoSlide();
+                startAutoSlide(); // Reset auto-slide timer after manual interaction
+            }
+        
+            // Adding manual controls (if needed)
+            const controls = document.querySelectorAll('.manual-btn');
+            controls.forEach((control, index) => {
+                control.addEventListener('click', () => manualSlide(index));
+            });
+        
+            // Hover controls for pausing auto-slide
+            slider.addEventListener('mouseenter', stopAutoSlide);
+            slider.addEventListener('mouseleave', startAutoSlide);
+        
+            // Initial start of auto-slide
+            startAutoSlide();
+        
+            // Adding smooth transition via CSS
+            slides.style.transition = 'transform 0.5s ease-in-out';
+        });
+        </script>
+        
+        
 </body>
 </html>
